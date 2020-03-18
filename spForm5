@@ -1,0 +1,139 @@
+Set Text
+Setting Btn Close
+Height Size Convet
+Height Size Convet
+Setting position of loaded form
+
+------------------------------------------------------- Set Text
+CP_Alpha_Num　（ｘ）　＝＞
+SETextBoxEx.TextBoxEx.typFormatMode.CP_Alpha_Num
+CP_Upper　（ｘ）　＝＞
+SETextBoxEx.TextBoxEx.typLowerUpper.CP_Upper
+
+
+------------------------------------------------------- Setting Btn Close
+    '@ﾌｫｰﾑﾛｰﾄﾞ中にEscﾎﾞﾀﾝを押させない
+    cmdClose.Cancel = False　（ｘ）　＝＞
+    Me.CancelButton = Nothing
+
+    '@Escﾎﾞﾀﾝを有効にする
+    cmdClose.Cancel = True　（ｘ）　＝＞
+    Me.CancelButton = cmdClose
+    
+optFlowClass
+optSearch
+-------------------------------------------------------Height Size Convet
+270             18
+300             20
+320             21
+350             23
+375             25
+400             27
+450             30
+595             40
+640             43
+755             50
+800             53
+855             57
+900             60
+975             65
+1000            67
+1175            78
+1200            80
+1300            87
+1500            100
+1620            108
+1800            120
+2000            133
+2045            136
+2175            145
+2400            160
+2445            163
+3200            213
+
+-------------------------------------------------------Setting position of loaded form
+    'NSYS 表示位置設定
+    StartPosition = FormStartPosition.Manual
+    Top = 0
+    Left = 0 
+    ' - My.Settings.FormOffset
+    
+-------------------------------------------------------Setting position of loaded form
+    .Cell(flexcpAlignment, CMlngvsfRowTitle, CMlngvsfColTitle, .Rows.Count - 1, .Cols.Count - 1) = flexAlignCenterCenter(x) =>
+    lFixedStyle.TextAlign = TextAlignEnum.CenterCenter 
+    
+    .Cell(flexcpSort, .Rows.Fixed, mtypChgSort.typChgSortList(llngCnt).lngCol, .Rows.Count - 1) = mtypChgSort.typChgSortList(llngCnt).lngOrder(x) =>
+    .Sort(mtypChgSort.typChgSortList(llngCnt).lngOrder, mtypChgSort.typChgSortList(llngCnt).lngCol)
+    
+    .RowHeight(CMlngvsfRowTitle) = CMlngvsfHHeight (x) =>
+    .Rows(CMlngvsfRowTitle).Height = CMlngvsfHHeight
+    
+    .FrozenCols = CMlngvsfFrozenCols(x) =>
+    .Cols.Frozen = CMlngvsfFrozenCols 
+    
+    .AllowUserResizing = flexResizeColumns (x) =>
+    .AllowResizing = AllowResizingEnum.Columns
+        
+    .Ellipsis = flexEllipsisEnd (x) =>
+    .Styles.Normal.Trimming = StringTrimming.EllipsisCharacter
+    環境
+-------------------------------------------------------Setting position of loaded form
+    '関数名：prvSetFocus
+    '機　能：フォーム専用のフォーカスセット追加処理
+    '引　数：lctlNext：フォーカス先コントロールオブジェクト
+    '      ：laryCallers：呼出し元コントロールの配列
+    '戻り値：なし
+    '作成日：2019/07/09 (Tue) 10:00:00 NSYS
+    '更新日：
+    '備　考：
+    Private Sub prvSetFocus(ByVal lctlNext As Control, ParamArray ByVal laryCallers As Control())
+
+        Dim lblnCallerTxtCarrier    As Boolean
+
+        If ActiveControl IsNot Nothing Then
+            Dim lblnMatch As Boolean = False
+            ' 呼出し元コントロールの配列に ActiveControlが含まれるか
+            For Each lctlCaller As Control In laryCallers
+                If ActiveControl Is lctlCaller Then
+                    lblnMatch = True
+                End If
+                ' Validateハンドラーコントロールの判定
+                If lctlCaller Is txtCarrier Then
+                    lblnCallerTxtCarrier = True
+                End If
+            Next
+
+            If lblnMatch = False Then
+                ' ActiveControlが呼び出し元と異なる場合、フォーカス移動しない (VB6互換動作)
+                Exit Sub
+            End If
+        End If
+
+        Try
+            ' Validateをハンドリングしているコントロールの場合は、ハンドラーをはずす
+            If lblnCallerTxtCarrier Then
+                RemoveHandler txtCarrier.Validating, AddressOf txtCarrier_Validate
+            End If
+            ' フォーカスセット
+            pubSetFocus(lctlNext)
+        Finally
+            ' Validateハンドラーを戻す
+            If lblnCallerTxtCarrier Then
+                AddHandler txtCarrier.Validating, AddressOf txtCarrier_Validate
+            End If
+        End Try
+
+    End Sub
+    
+    
+---------------------------------------------------------------------------------------
+.SetData(llngDoCnt, CMlngvsfLotListColEntryName, ltypOpLotLst(llngDoCnt).strEntryName)
+
+.SetData(llngDoCnt, CMlngvsfLotListColEntryName, ltypOpLotLst(llngDoCnt -1).strEntryName)
+
+
+.Cell(flexcpBackColor, llngDoCnt, CMlngvsfLotListStartCol, llngDoCnt, .Cols.Count - 1) _
+    = CPlngRColor  
+cellRangeL = .GetCellRange(llngDoCnt, CMlngvsfLotListStartCol, llngDoCnt, .Cols.Count - 1)
+cellRangeL.Style = newStyleL   
+---------------------------------------------------------------------------------------
